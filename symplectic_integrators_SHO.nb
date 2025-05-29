@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[     45052,       1071]
-NotebookOptionsPosition[     41226,        996]
-NotebookOutlinePosition[     41622,       1012]
-CellTagsIndexPosition[     41579,       1009]
+NotebookDataLength[     85184,       2028]
+NotebookOptionsPosition[     81861,       1962]
+NotebookOutlinePosition[     82258,       1978]
+CellTagsIndexPosition[     82215,       1975]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -32,252 +32,74 @@ Harmonic Oscillator ",
 
 Cell[CellGroupData[{
 
-Cell["Outline", "Section",
- CellChangeTimes->{{3.9573334635093307`*^9, 
-  3.9573334927306147`*^9}},ExpressionUUID->"9988c9db-ccbb-47cc-90f8-\
-6c9ef07b4432"],
-
 Cell["\<\
-1. Quick review of Euler and Runge-Kutta
-2. What is the symplectic structure of Hamiltonian systems?
-2. Symplectic integrator (22min)\[LineSeparator]\tOverview of different \
-numerical methods with the pendulum example. 
-\tMethods discussed will include Euler, Runge-Kutta, and Verlet.\
-\>", "Text",
- CellChangeTimes->{
-  3.957333488563569*^9, {3.957335614141571*^9, 3.957335646616847*^9}, {
-   3.957349162966414*^9, 3.957349174629437*^9}, {3.957349361689268*^9, 
-   3.957349430906273*^9}},ExpressionUUID->"e3d79c93-71ce-4a7e-9248-\
-2392c3b8c876"],
+1. Demonstrate the Phase Portrait and Energy Profile of a Harmonic Oscillator\
+\
+\>", "Section",
+ CellChangeTimes->{{3.957332676870317*^9, 3.957332682087143*^9}, {
+   3.957333568529375*^9, 3.9573335740941133`*^9}, {3.957335846845687*^9, 
+   3.9573358478476562`*^9}, {3.9573666223471193`*^9, 
+   3.9573666226783733`*^9}, {3.9574875691867523`*^9, 3.957487578826393*^9}, {
+   3.957509616052335*^9, 3.957509616203534*^9}, 
+   3.957511237384252*^9},ExpressionUUID->"8001542e-7a27-49ee-b44a-\
+936a8e4cf1bd"],
 
 Cell[TextData[{
- StyleBox["Reference",
-  FontWeight->"Bold"],
- "\n1. Dr. Dmitry Savransky, Cornell Uni., ",
- ButtonBox["Advanced Astrodynamics",
+ "Reference\n1. S. Spicklemire: ",
+ ButtonBox["RK4 and Symplectic Methods of Integration",
   BaseStyle->"Hyperlink",
   ButtonData->{
-    URL["https://sioslab.com/teaching/"], None},
-  ButtonNote->"https://sioslab.com/teaching/"],
- ", ",
- ButtonBox["YouTube",
+    URL["https://www.youtube.com/watch?v=zLnIWwvfuo4"], None},
+  ButtonNote->"https://www.youtube.com/watch?v=zLnIWwvfuo4"],
+ "\n\t- ",
+ ButtonBox["GitHub: HigherOrderMethods",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://github.com/sspickle/sci-comp-notebooks/blob/master/P04-\
+HigherOrderMethods.ipynb"], None},
+  ButtonNote->
+   "https://github.com/sspickle/sci-comp-notebooks/blob/master/P04-\
+HigherOrderMethods.ipynb"],
+ "\n\t- ",
+ ButtonBox["GitHub: Symplectic",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://github.com/sspickle/sci-comp-notebooks/blob/master/P04b-\
+Symplectic.ipynb"], None},
+  ButtonNote->
+   "https://github.com/sspickle/sci-comp-notebooks/blob/master/P04b-\
+Symplectic.ipynb"],
+ "\n2. J. Denker: ",
+ ButtonBox["Basic Properties of a Symplectic Integrator",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://www.av8n.com/physics/symplectic-integrator.htm"], None},
+  ButtonNote->"https://www.av8n.com/physics/symplectic-integrator.htm"],
+ "\n3. D. Savransky: ",
+ ButtonBox["Advanced Astrodynamics - Numerical Methods",
   BaseStyle->"Hyperlink",
   ButtonData->{
     URL["https://www.youtube.com/watch?v=Rl-Hx5MEADY&list=\
 PLdRvCnMJ1LSEH82OabhtYzz-uS2Ykq_0r"], None},
   ButtonNote->
    "https://www.youtube.com/watch?v=Rl-Hx5MEADY&list=PLdRvCnMJ1LSEH82OabhtYzz-\
-uS2Ykq_0r"],
- "\n2. Dr. John S. Denker, AT&T Laboratories Research, Basic Properties of a \
-Symplectic Integrator\n3. E. Hairer, G. Wanner, C. Lubich, ",
- ButtonBox["Geometric Numerical Integration",
-  BaseStyle->"Hyperlink",
-  ButtonData->{
-    URL["https://link.springer.com/book/10.1007/3-540-30666-8"], None},
-  ButtonNote->"https://link.springer.com/book/10.1007/3-540-30666-8"],
- "\n4. W.Schweizer, ",
- ButtonBox["Numerical Quantum Dynamics",
-  BaseStyle->"Hyperlink",
-  ButtonData->{
-    URL["https://play.google.com/store/books/details?id=zGYQBwAAQBAJ"], None},
-  
-  ButtonNote->"https://play.google.com/store/books/details?id=zGYQBwAAQBAJ"]
+uS2Ykq_0r"]
 }], "Text",
- CellChangeTimes->{{3.957334010497764*^9, 3.9573340131888933`*^9}, {
-   3.957334111274399*^9, 3.95733415006597*^9}, 3.957334231873219*^9, {
-   3.9573342891800957`*^9, 3.957334342622259*^9}, {3.957334442295868*^9, 
-   3.957334444854733*^9}, {3.957335458186325*^9, 3.957335606662753*^9}, {
-   3.95734365075943*^9, 3.95734378379841*^9}, {3.957343815159315*^9, 
-   3.957343834746162*^9}, {3.9573488526671143`*^9, 3.9573488680351353`*^9}, {
-   3.9573489340404882`*^9, 3.9573489399350224`*^9}, {3.957348974223319*^9, 
-   3.957348974692171*^9}, {3.957349088192422*^9, 
-   3.957349099065604*^9}},ExpressionUUID->"eaeb96f7-cd93-4c3d-8a28-\
-33d93c41c2c9"]
-}, Open  ]],
+ CellChangeTimes->{{3.9575109133670797`*^9, 3.9575109632783613`*^9}, {
+  3.957510996831139*^9, 3.9575110154171867`*^9}, {3.957511046572442*^9, 
+  3.957511204692459*^9}},ExpressionUUID->"ee7f81f7-2795-4f8a-847f-\
+c757aa2a9610"],
 
 Cell[CellGroupData[{
 
-Cell["1. Quick review of Euler and Runge-Kutta", "Section",
- CellChangeTimes->{{3.9573666003157187`*^9, 
-  3.957366607035787*^9}},ExpressionUUID->"60c649e3-6b03-479e-9008-\
-f92108a03109"],
-
-Cell["check my markdown", "Text",
- CellChangeTimes->{{3.957366870066434*^9, 
-  3.9573668729681787`*^9}},ExpressionUUID->"3a15f37e-87ba-411d-8515-\
-b32986970810"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["2. What is the symplectic structure of Hamiltonian systems ", "Section",
- CellChangeTimes->{{3.957332618079668*^9, 3.957332621013591*^9}, 
-   3.95733269296449*^9, 3.957332908499588*^9, {3.957333247617828*^9, 
-   3.9573332595762568`*^9}, {3.957333552053878*^9, 3.957333564183875*^9}, {
-   3.95736661074522*^9, 
-   3.9573666112318296`*^9}},ExpressionUUID->"700bf346-35ef-426b-9880-\
-a852184c131a"],
-
-Cell[TextData[{
- StyleBox["Reference",
-  FontWeight->"Bold"],
- " \n1. Mathematica: ",
- ButtonBox["Phase space of a simple pendulum",
-  BaseStyle->"Hyperlink",
-  ButtonData->{
-    URL["https://demonstrations.wolfram.com/PhaseSpaceOfASimplePendulum/"], 
-    None},
-  ButtonNote->
-   "https://demonstrations.wolfram.com/PhaseSpaceOfASimplePendulum/"]
-}], "Text",
- CellChangeTimes->{{3.9573339843576183`*^9, 3.957333991474806*^9}, {
-  3.957335689118102*^9, 
-  3.9573357402007*^9}},ExpressionUUID->"f1ca8371-93e6-4f8c-85ea-90772b6fa77d"],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"Manipulate", "[", 
-  RowBox[{
-   RowBox[{"Show", "[", 
-    RowBox[{
-     RowBox[{"StreamPlot", "[", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{"y", ",", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"-", "9.81"}], "/", "l"}], " ", 
-          RowBox[{"Sin", "[", "x", "]"}]}]}], "}"}], ",", 
-       RowBox[{"{", 
-        RowBox[{"x", ",", 
-         RowBox[{"-", " ", "Pi"}], ",", " ", "Pi"}], "}"}], ",", 
-       RowBox[{"{", 
-        RowBox[{"y", ",", 
-         RowBox[{"-", "7.5"}], ",", "7.5"}], "}"}], ",", 
-       RowBox[{"FrameLabel", "\[Rule]", 
-        RowBox[{"{", 
-         RowBox[{
-          RowBox[{"Style", "[", 
-           RowBox[{"\"\<\[Theta]\>\"", ",", "16"}], "]"}], ",", 
-          RowBox[{"Style", "[", 
-           
-           RowBox[{"\"\<\!\(\*OverscriptBox[\(\[Theta]\), \(.\)]\)\>\"", ",", 
-            "16"}], "]"}]}], "}"}]}], ",", 
-       RowBox[{"StreamPoints", "\[Rule]", "50"}], ",", 
-       RowBox[{"StreamStyle", "\[Rule]", 
-        RowBox[{"{", 
-         RowBox[{"Blue", ",", "Thin"}], "}"}]}]}], "]"}], ",", 
-     RowBox[{"ContourPlot", "[", 
-      RowBox[{
-       RowBox[{
-        RowBox[{
-         RowBox[{
-          RowBox[{"y", "^", "2"}], "/", "2"}], "-", 
-         RowBox[{
-          RowBox[{"9.81", "/", "l"}], " ", 
-          RowBox[{"Cos", "[", "x", "]"}]}]}], "\[Equal]", " ", 
-        RowBox[{"9.81", "/", "l"}]}], ",", 
-       RowBox[{"{", 
-        RowBox[{"x", ",", 
-         RowBox[{"-", " ", "Pi"}], ",", " ", "Pi"}], "}"}], ",", 
-       RowBox[{"{", 
-        RowBox[{"y", ",", 
-         RowBox[{"-", "7.5"}], ",", "7.5"}], "}"}], ",", 
-       RowBox[{"ContourStyle", "\[Rule]", 
-        RowBox[{"{", 
-         RowBox[{"Thick", ",", "Red"}], "}"}]}]}], "]"}], ",", 
-     RowBox[{"ImageSize", "\[Rule]", 
-      RowBox[{"1.1", 
-       RowBox[{"{", 
-        RowBox[{"400", ",", "400"}], "}"}]}]}]}], "]"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"l", ",", "4", ",", "\"\<pendulum length\>\""}], "}"}], ",", 
-     "1", ",", "10", ",", "0.1", ",", 
-     RowBox[{"Appearance", "\[Rule]", " ", "\"\<Labeled\>\""}]}], "}"}]}], 
-  "]"}]], "Input",
- CellChangeTimes->{{3.957332700343403*^9, 3.957332738060532*^9}},
- CellLabel->"In[78]:=",ExpressionUUID->"f84077b3-4faa-44f2-8cc6-04c1cd166f3d"],
-
-Cell[BoxData[
- TagBox[
-  StyleBox[
-   DynamicModuleBox[{$CellContext`l$$ = 1.6, Typeset`show$$ = True, 
-    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
-    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
-    "\"untitled\"", Typeset`specs$$ = {{{
-       Hold[$CellContext`l$$], 4, "pendulum length"}, 1, 10, 0.1, ControlType -> 
-      Manipulator}}, Typeset`size$$ = {
-    440.00000000000006`, {217.13403320312503`, 222.86596679687503`}}, 
-    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
-    Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
-    DynamicBox[Manipulate`ManipulateBoxes[
-     1, StandardForm, "Variables" :> {$CellContext`l$$ = 4}, 
-      "ControllerVariables" :> {}, 
-      "OtherVariables" :> {
-       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
-        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
-        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
-         Typeset`skipInitDone$$, Typeset`keyframeActionsQ$$, 
-        Typeset`keyframeList$$}, "Body" :> Show[
-        StreamPlot[{$CellContext`y, ((-9.81)/$CellContext`l$$) 
-          Sin[$CellContext`x]}, {$CellContext`x, -Pi, 
-          Pi}, {$CellContext`y, -7.5, 7.5}, FrameLabel -> {
-           Style["\[Theta]", 16], 
-           Style["\!\(\*OverscriptBox[\(\[Theta]\), \(.\)]\)", 16]}, 
-         StreamPoints -> 50, StreamStyle -> {Blue, Thin}], 
-        ContourPlot[$CellContext`y^2/2 - (9.81/$CellContext`l$$) 
-          Cos[$CellContext`x] == 
-         9.81/$CellContext`l$$, {$CellContext`x, -Pi, 
-          Pi}, {$CellContext`y, -7.5, 7.5}, ContourStyle -> {Thick, Red}], 
-        ImageSize -> 1.1 {400, 400}], 
-      "Specifications" :> {{{$CellContext`l$$, 4, "pendulum length"}, 1, 10, 
-         0.1, Appearance -> "Labeled"}}, "Options" :> {}, 
-      "DefaultOptions" :> {}],
-     ImageSizeCache->{489.1, {264.8044586181641, 270.5363922119141}},
-     SingleEvaluation->True],
-    Deinitialization:>None,
-    DynamicModuleValues:>{},
-    SynchronousInitialization->True,
-    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
-    UnsavedVariables:>{Typeset`initDone$$},
-    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
-   Deployed->True,
-   StripOnInput->False],
-  Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.957332739158249*^9, 3.957332875661374*^9, 
-  3.957333382426178*^9},
- CellLabel->"Out[78]=",ExpressionUUID->"2740476d-2373-42d8-b697-64f3c1bb1d60"]
-}, Closed]]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["3. Visualising the phase space of a Harmonic oscillator", "Section",
- CellChangeTimes->{{3.957332676870317*^9, 3.957332682087143*^9}, {
-  3.957333568529375*^9, 3.9573335740941133`*^9}, {3.957335846845687*^9, 
-  3.9573358478476562`*^9}, {3.9573666223471193`*^9, 3.9573666226783733`*^9}, {
-  3.9574875691867523`*^9, 
-  3.957487578826393*^9}},ExpressionUUID->"8001542e-7a27-49ee-b44a-\
-936a8e4cf1bd"],
-
-Cell["For an initial value problem, we have ", "Text",
- CellChangeTimes->{{3.95733585458451*^9, 3.957335905536146*^9}, {
-  3.957336070284264*^9, 
-  3.9573361640153503`*^9}},ExpressionUUID->"dc6baca2-db93-4fca-8407-\
-0bf5a764642c"],
-
-Cell[CellGroupData[{
-
-Cell["2.1 Setup Module", "Subsection",
+Cell["1.1 Setup Modules", "Subsection",
  CellChangeTimes->{{3.957333102801949*^9, 3.957333105348344*^9}, {
    3.9573336912708797`*^9, 3.9573336982631083`*^9}, {3.957370852953404*^9, 
    3.957370860519806*^9}, {3.957487594837837*^9, 3.9574876199645767`*^9}, {
    3.957491450244094*^9, 3.957491457097405*^9}, 3.957491638030937*^9, {
-   3.957492614438779*^9, 
-   3.957492616359295*^9}},ExpressionUUID->"802055fe-749f-46cc-b0e6-\
+   3.957492614438779*^9, 3.957492616359295*^9}, 3.957493220977869*^9, {
+   3.957510865637548*^9, 
+   3.957510865839073*^9}},ExpressionUUID->"802055fe-749f-46cc-b0e6-\
 49726cec9b71"],
 
 Cell[CellGroupData[{
@@ -295,10 +117,411 @@ Output:  Interactive phase portrait plot with variable time step\
    3.957492626347818*^9},ExpressionUUID->"a76f92d7-df17-44fa-9635-\
 4a9652d70ad3"],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
-  RowBox[{"phasePortrait", "[", "\[IndentingNewLine]", 
-   RowBox[{"transformationMatrixTemplate_", ",", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"phasePortrait", "[", 
+    RowBox[{"transformationMatrixTemplate_", ",", 
+     RowBox[{"initialConditions_", ":", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0.1", ",", "1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0.1", ",", "1.1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1.1"}], "}"}]}], "}"}]}], ",", 
+     RowBox[{"steps_", ":", "12"}]}], "]"}], ":=", 
+   RowBox[{"Manipulate", "[", 
+    RowBox[{
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"Tmat", ",", "data", ",", "labelOffset"}], "}"}], ",", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Evaluate", " ", "the", " ", "transformation", " ", "matrix", " ", 
+         "with", " ", "the", " ", "current", " ", "timestep"}], "*)"}], 
+       RowBox[{
+        RowBox[{"Tmat", "=", 
+         RowBox[{"transformationMatrixTemplate", "/.", " ", 
+          RowBox[{"t", "->", "timestep"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Evolve", " ", "each", " ", "initial", " ", "condition"}], 
+         "*)"}], 
+        RowBox[{"data", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{"NestList", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Tmat", ".", "#"}], "&"}], ",", "ic", ",", "steps"}], 
+            "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"ic", ",", "initialConditions"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Offset", " ", "for", " ", 
+          RowBox[{"labels", ":", 
+           RowBox[{"top", "-", "right"}]}]}], "*)"}], 
+        RowBox[{"labelOffset", "=", 
+         RowBox[{"{", 
+          RowBox[{"0.2", ",", "0.2"}], "}"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Phase", " ", 
+           RowBox[{"portrait", ":", "points"}]}], ",", "lines", ",", "labels",
+           ",", 
+          RowBox[{
+          "and", " ", "solid", " ", "dark", " ", "grey", " ", "line", " ", 
+           "for", " ", "trajectory", " ", "1"}]}], "*)"}], 
+        RowBox[{"Graphics", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"(*", 
+            RowBox[{"Circle", " ", "for", " ", "reference"}], "*)"}], 
+           RowBox[{"LightGray", ",", 
+            RowBox[{"Circle", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{
+              "Connected", " ", "loops", " ", "at", " ", "each", " ", 
+               "step"}], "-", 
+              RowBox[{"thicker", " ", "lines"}]}], "*)"}], 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"Black", ",", "Thick", ",", 
+                RowBox[{"Line", "[", 
+                 RowBox[{"Append", "[", 
+                  RowBox[{
+                   RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"All", ",", "step"}], "]"}], "]"}], ",", 
+                   RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "step"}], "]"}], "]"}]}], "]"}], 
+                 "]"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"step", ",", "1", ",", 
+                RowBox[{"steps", "+", "1"}]}], "}"}]}], "]"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+             "Red", " ", "points", " ", "for", " ", "trajectory", " ", "1"}], 
+             "*)"}], 
+            RowBox[{"{", 
+             RowBox[{"Red", ",", 
+              RowBox[{"PointSize", "[", "0.02", "]"}], ",", 
+              RowBox[{"Point", "[", 
+               RowBox[{"data", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+             "Blue", " ", "points", " ", "for", " ", "other", " ", 
+              "trajectories"}], "*)"}], 
+            RowBox[{"{", 
+             RowBox[{"Blue", ",", 
+              RowBox[{"PointSize", "[", "0.015", "]"}], ",", 
+              RowBox[{"Point", "[", 
+               RowBox[{"Flatten", "[", 
+                RowBox[{
+                 RowBox[{"Drop", "[", 
+                  RowBox[{"data", ",", "1"}], "]"}], ",", "1"}], "]"}], 
+               "]"}]}], "}"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Labels", " ", "for", " ", "trajectory", " ", "1"}], ":", 
+               RowBox[{"t0", " ", "in", " ", "red"}]}], ",", 
+              RowBox[{"others", " ", "in", " ", "black"}]}], "*)"}], 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"i", "==", "1"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"Red", ",", 
+                  RowBox[{"Text", "[", 
+                   RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<t0\>\"", ",", "14", ",", "Bold"}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "i"}], "]"}], "]"}], "+", 
+                    "labelOffset"}]}], "]"}]}], "}"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"Black", ",", 
+                  RowBox[{"Text", "[", 
+                   RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{
+                    RowBox[{"\"\<t\>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"i", "-", "1"}], "]"}]}], ",", "14", ",", 
+                    "Bold"}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "i"}], "]"}], "]"}], "+", 
+                    "labelOffset"}]}], "]"}]}], "}"}]}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"i", ",", "1", ",", 
+                RowBox[{"Length", "[", 
+                 RowBox[{"data", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+             "Solid", " ", "dark", " ", "grey", " ", "line", " ", "for", " ", 
+              "trajectory", " ", "1"}], "*)"}], 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Darker", "[", 
+               RowBox[{"Gray", ",", "0.4"}], "]"}], ",", "Thick", ",", 
+              RowBox[{"Line", "[", 
+               RowBox[{"data", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}]}], "}"}], ",", 
+          
+          RowBox[{"Axes", "->", "True"}], ",", 
+          RowBox[{"AxesLabel", "->", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Position (q)\>\"", ",", "\"\<Momentum (p)\>\""}], 
+            "}"}]}], ",", 
+          RowBox[{"PlotRange", "->", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "2"}], ",", "2"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "2"}], ",", "2"}], "}"}]}], "}"}]}], ",", 
+          RowBox[{"AspectRatio", "->", "1"}], ",", 
+          RowBox[{"Background", "->", "LightGray"}]}], "]"}]}]}], "]"}], ",", 
+     
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "timestep", ",", "0.5", ",", "\"\<Time Step (\[CapitalDelta]t)\>\""}],
+         "}"}], ",", "0.1", ",", 
+       RowBox[{"2", " ", "Pi"}], ",", "0.1", ",", 
+       RowBox[{"Appearance", "->", "\"\<Labeled\>\""}]}], "}"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"phasePortraitSymplecticEuler", "[", 
+    RowBox[{
+     RowBox[{"initialConditions_", ":", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0.1", ",", "1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0.1", ",", "1.1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1.1"}], "}"}]}], "}"}]}], ",", 
+     RowBox[{"steps_", ":", "12"}]}], "]"}], ":=", 
+   RowBox[{"Manipulate", "[", 
+    RowBox[{
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\[CapitalDelta]t", "=", "timestep"}], ",", "data", ",", 
+         "labelOffset"}], "}"}], ",", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Evolve", " ", "each", " ", "initial", " ", "condition", " ", "using",
+          " ", "Symplectic", " ", "Euler"}], "*)"}], 
+       RowBox[{
+        RowBox[{"data", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{"NestList", "[", 
+            RowBox[{
+             RowBox[{"Function", "[", 
+              RowBox[{
+               RowBox[{"{", "state", "}"}], ",", 
+               RowBox[{"Module", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"q", ",", "p", ",", "qNew", ",", "pNew"}], "}"}], ",", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"q", ",", "p"}], "}"}], "=", "state"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"qNew", "=", 
+                   RowBox[{"q", "+", 
+                    RowBox[{"\[CapitalDelta]t", " ", "p"}]}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"pNew", "=", 
+                   RowBox[{"p", "-", 
+                    RowBox[{"\[CapitalDelta]t", " ", "qNew"}]}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"{", 
+                   RowBox[{"qNew", ",", "pNew"}], "}"}]}]}], "]"}]}], "]"}], ",",
+              "ic", ",", "steps"}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"ic", ",", "initialConditions"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Offset", " ", "for", " ", 
+          RowBox[{"labels", ":", 
+           RowBox[{"top", "-", "right"}]}]}], "*)"}], 
+        RowBox[{"labelOffset", "=", 
+         RowBox[{"{", 
+          RowBox[{"0.2", ",", "0.2"}], "}"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Phase", " ", 
+           RowBox[{"portrait", ":", "points"}]}], ",", "lines", ",", 
+          "labels"}], "*)"}], 
+        RowBox[{"Graphics", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"LightGray", ",", 
+            RowBox[{"Circle", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{
+              "Connected", " ", "loops", " ", "at", " ", "each", " ", 
+               "step"}], "-", 
+              RowBox[{"thicker", " ", "lines"}]}], "*)"}], 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"Black", ",", "Thick", ",", 
+                RowBox[{"Line", "[", 
+                 RowBox[{"Append", "[", 
+                  RowBox[{
+                   RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"All", ",", "step"}], "]"}], "]"}], ",", 
+                   RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "step"}], "]"}], "]"}]}], "]"}], 
+                 "]"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"step", ",", "1", ",", 
+                RowBox[{"steps", "+", "1"}]}], "}"}]}], "]"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+             "Red", " ", "points", " ", "for", " ", "trajectory", " ", "1"}], 
+             "*)"}], 
+            RowBox[{"{", 
+             RowBox[{"Red", ",", 
+              RowBox[{"PointSize", "[", "0.02", "]"}], ",", 
+              RowBox[{"Point", "[", 
+               RowBox[{"data", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+             "Blue", " ", "points", " ", "for", " ", "other", " ", 
+              "trajectories"}], "*)"}], 
+            RowBox[{"{", 
+             RowBox[{"Blue", ",", 
+              RowBox[{"PointSize", "[", "0.015", "]"}], ",", 
+              RowBox[{"Point", "[", 
+               RowBox[{"Flatten", "[", 
+                RowBox[{
+                 RowBox[{"Drop", "[", 
+                  RowBox[{"data", ",", "1"}], "]"}], ",", "1"}], "]"}], 
+               "]"}]}], "}"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Labels", " ", "for", " ", "trajectory", " ", "1"}], ":", 
+               RowBox[{"t0", " ", "in", " ", "red"}]}], ",", 
+              RowBox[{"others", " ", "in", " ", "black"}]}], "*)"}], 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"i", "==", "1"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"Red", ",", 
+                  RowBox[{"Text", "[", 
+                   RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<t0\>\"", ",", "14", ",", "Bold"}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "i"}], "]"}], "]"}], "+", 
+                    "labelOffset"}]}], "]"}]}], "}"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"Black", ",", 
+                  RowBox[{"Text", "[", 
+                   RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{
+                    RowBox[{"\"\<t\>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"i", "-", "1"}], "]"}]}], ",", "14", ",", 
+                    "Bold"}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "i"}], "]"}], "]"}], "+", 
+                    "labelOffset"}]}], "]"}]}], "}"}]}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"i", ",", "1", ",", 
+                RowBox[{"Length", "[", 
+                 RowBox[{"data", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+            RowBox[{"(*", 
+             RowBox[{
+             "Solid", " ", "dark", " ", "grey", " ", "line", " ", "for", " ", 
+              "trajectory", " ", "1"}], "*)"}], 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Darker", "[", 
+               RowBox[{"Gray", ",", "0.4"}], "]"}], ",", "Thick", ",", 
+              RowBox[{"Line", "[", 
+               RowBox[{"data", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}]}], "}"}], ",", 
+          
+          RowBox[{"Axes", "->", "True"}], ",", 
+          RowBox[{"AxesLabel", "->", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Position (q)\>\"", ",", "\"\<Momentum (p)\>\""}], 
+            "}"}]}], ",", 
+          RowBox[{"PlotRange", "->", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "2"}], ",", "2"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "2"}], ",", "2"}], "}"}]}], "}"}]}], ",", 
+          RowBox[{"AspectRatio", "->", "1"}], ",", 
+          RowBox[{"Background", "->", "LightGray"}]}], "]"}]}]}], "]"}], ",", 
+     
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "timestep", ",", "0.5", ",", "\"\<Time Step (\[CapitalDelta]t)\>\""}],
+         "}"}], ",", "0.1", ",", 
+       RowBox[{"2", " ", "Pi"}], ",", "0.1", ",", 
+       RowBox[{"Appearance", "->", "\"\<Labeled\>\""}]}], "}"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"phasePortraitLeapfrog", "[", 
+   RowBox[{
     RowBox[{"initialConditions_", ":", 
      RowBox[{"{", 
       RowBox[{
@@ -316,69 +539,98 @@ Cell[BoxData[
     RowBox[{"Module", "[", 
      RowBox[{
       RowBox[{"{", 
-       RowBox[{"Tmat", ",", "data", ",", "labelOffset"}], "}"}], ",", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\[CapitalDelta]t", "=", "timestep"}], ",", "data", ",", 
+        "labelOffset"}], "}"}], ",", 
       RowBox[{"(*", 
        RowBox[{
-       "Evaluate", " ", "the", " ", "transformation", " ", "matrix", " ", 
-        "with", " ", "the", " ", "current", " ", "timestep"}], "*)"}], 
+       "Evolve", " ", "each", " ", "initial", " ", "condition", " ", "using", 
+        " ", "Leapfrog", " ", 
+        RowBox[{"(", 
+         RowBox[{"Velocity", " ", "Verlet"}], ")"}]}], "*)"}], 
       RowBox[{
-       RowBox[{"Tmat", "=", 
-        RowBox[{"transformationMatrixTemplate", "/.", " ", 
-         RowBox[{"t", "->", "timestep"}]}]}], ";", "\[IndentingNewLine]", 
-       "\[IndentingNewLine]", 
-       RowBox[{"(*", 
-        RowBox[{"Evolve", " ", "each", " ", "initial", " ", "condition"}], 
-        "*)"}], "\[IndentingNewLine]", 
        RowBox[{"data", "=", 
         RowBox[{"Table", "[", 
          RowBox[{
           RowBox[{"NestList", "[", 
            RowBox[{
-            RowBox[{
-             RowBox[{"Tmat", ".", "#"}], "&"}], ",", "ic", ",", "steps"}], 
-           "]"}], ",", 
+            RowBox[{"Function", "[", 
+             RowBox[{
+              RowBox[{"{", "state", "}"}], ",", 
+              RowBox[{"Module", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                 "q", ",", "p", ",", "pHalf", ",", "qNew", ",", "pNew"}], 
+                 "}"}], ",", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"q", ",", "p"}], "}"}], "=", "state"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"pHalf", "=", 
+                  RowBox[{"p", "-", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"\[CapitalDelta]t", "/", "2"}], ")"}], " ", 
+                    "q"}]}]}], ";", 
+                 RowBox[{"(*", 
+                  RowBox[{
+                   RowBox[{"1.", " ", "Half"}], "-", 
+                   RowBox[{"step", " ", "momentum", " ", "update"}]}], "*)"}], 
+                 RowBox[{"qNew", "=", 
+                  RowBox[{"q", "+", 
+                   RowBox[{"\[CapitalDelta]t", " ", "pHalf"}]}]}], ";", 
+                 RowBox[{"(*", 
+                  RowBox[{
+                   RowBox[{"2.", " ", "Full"}], "-", 
+                   RowBox[{"step", " ", "position", " ", "update"}]}], "*)"}], 
+                 RowBox[{"pNew", "=", 
+                  RowBox[{"pHalf", "-", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"\[CapitalDelta]t", "/", "2"}], ")"}], " ", 
+                    "qNew"}]}]}], ";", 
+                 RowBox[{"(*", 
+                  RowBox[{
+                   RowBox[{"3.", " ", "Another", " ", "half"}], "-", 
+                   RowBox[{"step", " ", "momentum", " ", "update"}]}], "*)"}], 
+                 RowBox[{"{", 
+                  RowBox[{"qNew", ",", "pNew"}], "}"}]}]}], "]"}]}], "]"}], ",",
+             "ic", ",", "steps"}], "]"}], ",", 
           RowBox[{"{", 
            RowBox[{"ic", ",", "initialConditions"}], "}"}]}], "]"}]}], ";", 
-       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
        RowBox[{"(*", 
         RowBox[{"Offset", " ", "for", " ", 
          RowBox[{"labels", ":", 
-          RowBox[{"top", "-", "right"}]}]}], "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"top", "-", "right"}]}]}], "*)"}], 
        RowBox[{"labelOffset", "=", 
         RowBox[{"{", 
          RowBox[{"0.2", ",", "0.2"}], "}"}]}], ";", "\[IndentingNewLine]", 
-       "\[IndentingNewLine]", 
        RowBox[{"(*", 
         RowBox[{
          RowBox[{"Phase", " ", 
           RowBox[{"portrait", ":", "points"}]}], ",", "lines", ",", 
-         "labels"}], "*)"}], "\[IndentingNewLine]", 
+         "labels"}], "*)"}], 
        RowBox[{"Graphics", "[", 
         RowBox[{
-         RowBox[{"{", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-          RowBox[{"(*", 
-           RowBox[{"Circle", " ", "for", " ", "reference"}], "*)"}], 
-          "\[IndentingNewLine]", 
+         RowBox[{"{", 
           RowBox[{"LightGray", ",", 
            RowBox[{"Circle", "[", 
             RowBox[{
              RowBox[{"{", 
               RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", 
-           "\[IndentingNewLine]", "\[IndentingNewLine]", 
            RowBox[{"(*", 
             RowBox[{
              RowBox[{
              "Connected", " ", "loops", " ", "at", " ", "each", " ", "step"}],
               "-", 
              RowBox[{"thicker", " ", "lines"}]}], "*)"}], 
-           "\[IndentingNewLine]", 
            RowBox[{"Table", "[", 
             RowBox[{
-             RowBox[{"{", "\[IndentingNewLine]", 
-              RowBox[{
-              "Black", ",", "\[IndentingNewLine]", "Thick", ",", 
-               "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"Black", ",", "Thick", ",", 
                RowBox[{"Line", "[", 
                 RowBox[{"Append", "[", 
                  RowBox[{
@@ -388,50 +640,54 @@ Cell[BoxData[
                   RowBox[{"data", "[", 
                    RowBox[{"[", 
                     RowBox[{"1", ",", "step"}], "]"}], "]"}]}], "]"}], 
-                "]"}]}], "\[IndentingNewLine]", "}"}], ",", 
-             "\[IndentingNewLine]", 
+                "]"}]}], "}"}], ",", 
              RowBox[{"{", 
               RowBox[{"step", ",", "1", ",", 
-               RowBox[{"steps", "+", "1"}]}], "}"}]}], "\[IndentingNewLine]", 
-            "]"}], ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+               RowBox[{"steps", "+", "1"}]}], "}"}]}], "]"}], ",", 
            RowBox[{"(*", 
             RowBox[{
-            "Small", " ", "blue", " ", "points", " ", "at", " ", "each", " ", 
-             "position"}], "*)"}], "\[IndentingNewLine]", 
+            "Red", " ", "points", " ", "for", " ", "trajectory", " ", "1"}], 
+            "*)"}], 
+           RowBox[{"{", 
+            RowBox[{"Red", ",", 
+             RowBox[{"PointSize", "[", "0.02", "]"}], ",", 
+             RowBox[{"Point", "[", 
+              RowBox[{"data", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}], ",", 
+           RowBox[{"(*", 
+            RowBox[{
+            "Blue", " ", "points", " ", "for", " ", "other", " ", 
+             "trajectories"}], "*)"}], 
            RowBox[{"{", 
             RowBox[{"Blue", ",", 
              RowBox[{"PointSize", "[", "0.015", "]"}], ",", 
              RowBox[{"Point", "[", 
               RowBox[{"Flatten", "[", 
-               RowBox[{"data", ",", "1"}], "]"}], "]"}]}], "}"}], ",", 
-           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"Drop", "[", 
+                 RowBox[{"data", ",", "1"}], "]"}], ",", "1"}], "]"}], 
+              "]"}]}], "}"}], ",", 
            RowBox[{"(*", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"Labels", " ", "for", " ", "trajectory", " ", "1"}], ":", 
-              RowBox[{"t0", " ", "in", " ", "red"}]}], ",", 
-             RowBox[{"others", " ", "in", " ", "black"}]}], "*)"}], 
-           "\[IndentingNewLine]", 
-           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{"Labels", " ", "for", " ", "trajectory", " ", "1"}], 
+            "*)"}], 
+           RowBox[{"Table", "[", 
             RowBox[{
              RowBox[{"If", "[", 
               RowBox[{
-               RowBox[{"i", "==", "1"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"i", "==", "1"}], ",", 
                RowBox[{"{", 
-                RowBox[{"Red", ",", "\[IndentingNewLine]", 
+                RowBox[{"Red", ",", 
                  RowBox[{"Text", "[", 
                   RowBox[{
                    RowBox[{"Style", "[", 
-                    RowBox[{"\"\<t0\>\"", ",", "14", ",", "Bold"}], "]"}], ",",
-                    "\[IndentingNewLine]", 
+                    RowBox[{"\"\<t0\>\"", ",", "14", ",", "Bold"}], "]"}], ",", 
                    RowBox[{
                     RowBox[{"data", "[", 
                     RowBox[{"[", 
                     RowBox[{"1", ",", "i"}], "]"}], "]"}], "+", 
-                    "labelOffset"}]}], "]"}]}], "\[IndentingNewLine]", "}"}], 
-               ",", "\[IndentingNewLine]", 
+                    "labelOffset"}]}], "]"}]}], "}"}], ",", 
                RowBox[{"{", 
-                RowBox[{"Black", ",", "\[IndentingNewLine]", 
+                RowBox[{"Black", ",", 
                  RowBox[{"Text", "[", 
                   RowBox[{
                    RowBox[{"Style", "[", 
@@ -439,25 +695,33 @@ Cell[BoxData[
                     RowBox[{"\"\<t\>\"", "<>", 
                     RowBox[{"ToString", "[", 
                     RowBox[{"i", "-", "1"}], "]"}]}], ",", "14", ",", 
-                    "Bold"}], "]"}], ",", "\[IndentingNewLine]", 
+                    "Bold"}], "]"}], ",", 
                    RowBox[{
                     RowBox[{"data", "[", 
                     RowBox[{"[", 
                     RowBox[{"1", ",", "i"}], "]"}], "]"}], "+", 
-                    "labelOffset"}]}], "]"}]}], "}"}]}], 
-              "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                    "labelOffset"}]}], "]"}]}], "}"}]}], "]"}], ",", 
              RowBox[{"{", 
               RowBox[{"i", ",", "1", ",", 
                RowBox[{"Length", "[", 
                 RowBox[{"data", "[", 
-                 RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}]}], 
-            "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "}"}], ",",
-          "\[IndentingNewLine]", 
-         RowBox[{"Axes", "->", "True"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+           RowBox[{"(*", 
+            RowBox[{
+            "Solid", " ", "dark", " ", "grey", " ", "line", " ", "for", " ", 
+             "trajectory", " ", "1"}], "*)"}], 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Darker", "[", 
+              RowBox[{"Gray", ",", "0.4"}], "]"}], ",", "Thick", ",", 
+             RowBox[{"Line", "[", 
+              RowBox[{"data", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "}"}]}], "}"}], ",", 
+         RowBox[{"Axes", "->", "True"}], ",", 
          RowBox[{"AxesLabel", "->", 
           RowBox[{"{", 
            RowBox[{"\"\<Position (q)\>\"", ",", "\"\<Momentum (p)\>\""}], 
-           "}"}]}], ",", "\[IndentingNewLine]", 
+           "}"}]}], ",", 
          RowBox[{"PlotRange", "->", 
           RowBox[{"{", 
            RowBox[{
@@ -467,20 +731,17 @@ Cell[BoxData[
             RowBox[{"{", 
              RowBox[{
               RowBox[{"-", "2"}], ",", "2"}], "}"}]}], "}"}]}], ",", 
-         "\[IndentingNewLine]", 
          RowBox[{"AspectRatio", "->", "1"}], ",", 
-         RowBox[{"Background", "->", "LightGray"}]}], "\[IndentingNewLine]", 
-        "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
-    RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{"Background", "->", "LightGray"}]}], "]"}]}]}], "]"}], ",", 
+    RowBox[{"{", 
      RowBox[{
       RowBox[{"{", 
        RowBox[{
        "timestep", ",", "0.5", ",", "\"\<Time Step (\[CapitalDelta]t)\>\""}], 
-       "}"}], ",", "\[IndentingNewLine]", "0.1", ",", 
-      RowBox[{"2", " ", "Pi"}], ",", "0.1", ",", "\[IndentingNewLine]", 
-      RowBox[{"Appearance", "->", "\"\<Labeled\>\""}]}], 
-     "\[IndentingNewLine]", "}"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
-
+       "}"}], ",", "0.1", ",", 
+      RowBox[{"2", " ", "Pi"}], ",", "0.1", ",", 
+      RowBox[{"Appearance", "->", "\"\<Labeled\>\""}]}], "}"}]}], 
+   "]"}]}]}], "Input",
  CellChangeTimes->{
   3.957487839367728*^9, {3.957487882275775*^9, 3.957487974915875*^9}, 
    3.957488060877926*^9, 3.957488095405631*^9, {3.9574881735899878`*^9, 
@@ -493,8 +754,12 @@ Cell[BoxData[
    3.9574912534003057`*^9, 3.957491272075697*^9}, {3.9574913373438263`*^9, 
    3.957491347408544*^9}, {3.957491403463882*^9, 3.9574914258118877`*^9}, 
    3.957491465849847*^9, {3.9574916896922617`*^9, 3.957491958930133*^9}, {
-   3.957492077423781*^9, 3.957492079079492*^9}},
- CellLabel->"In[45]:=",ExpressionUUID->"95706b75-bf7c-40e1-8dc2-3c6163e87d3d"]
+   3.957492077423781*^9, 3.957492079079492*^9}, {3.957493599976639*^9, 
+   3.9574936008723097`*^9}, 3.957493695702429*^9, {3.957493792551112*^9, 
+   3.957493795236026*^9}, 3.957493862450482*^9, {3.957507283876607*^9, 
+   3.95750728482178*^9}, 3.957507977459556*^9, 3.957508866861064*^9},
+ CellLabel->
+  "In[100]:=",ExpressionUUID->"95706b75-bf7c-40e1-8dc2-3c6163e87d3d"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -514,10 +779,271 @@ Output:  Interactive energy profile plot with variable time step\
   3.957493153483799*^9}},ExpressionUUID->"92d82d09-333b-4a36-ba81-\
 ade23da11b1f"],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
-  RowBox[{"energyPlot", "[", "\[IndentingNewLine]", 
-   RowBox[{"transformationMatrixTemplate_", ",", 
+  RowBox[{
+   RowBox[{"energyPlot", "[", 
+    RowBox[{"transformationMatrixTemplate_", ",", 
+     RowBox[{"initialCondition_", ":", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "1"}], "}"}]}], ",", 
+     RowBox[{"steps_", ":", "12"}]}], "]"}], ":=", 
+   RowBox[{"Manipulate", "[", 
+    RowBox[{
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "Tmat", ",", "data", ",", "energies", ",", "times", ",", 
+         "referenceEnergy"}], "}"}], ",", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Evaluate", " ", "the", " ", "transformation", " ", "matrix", " ", 
+         "with", " ", "the", " ", "current", " ", "timestep"}], "*)"}], 
+       RowBox[{
+        RowBox[{"Tmat", "=", 
+         RowBox[{"transformationMatrixTemplate", "/.", " ", 
+          RowBox[{"t", "->", "timestep"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Evolve", " ", "the", " ", "initial", " ", "condition"}], 
+         "*)"}], 
+        RowBox[{"data", "=", 
+         RowBox[{"NestList", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Tmat", ".", "#"}], "&"}], ",", "initialCondition", ",", 
+           "steps"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Compute", " ", 
+           RowBox[{"energies", ":", "E"}]}], "=", 
+          RowBox[{
+           RowBox[{"1", "/", "2"}], " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"q", "^", "2"}], "+", 
+             RowBox[{"p", "^", "2"}]}], ")"}]}]}], "*)"}], 
+        RowBox[{"energies", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"1", "/", "2"}], ")"}], " ", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"#", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "^", "2"}], "+", 
+              RowBox[{
+               RowBox[{"#", "[", 
+                RowBox[{"[", "2", "]"}], "]"}], "^", "2"}]}], ")"}]}], "&"}], 
+          "/@", "data"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Compute", " ", "corresponding", " ", "times"}], "*)"}], 
+        RowBox[{"times", "=", 
+         RowBox[{"timestep", "*", 
+          RowBox[{"Range", "[", 
+           RowBox[{"0", ",", "steps"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "Reference", " ", "energy", " ", "from", " ", "initial", " ", 
+          "condition"}], "*)"}], 
+        RowBox[{"referenceEnergy", "=", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"initialCondition", "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "^", "2"}], "+", 
+            RowBox[{
+             RowBox[{"initialCondition", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "^", "2"}]}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Plot", " ", "energy", " ", 
+          RowBox[{"vs", ".", "time"}], " ", "with", " ", "reference", " ", 
+          "line"}], "*)"}], 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"ListLinePlot", "[", 
+           RowBox[{
+            RowBox[{"Transpose", "[", 
+             RowBox[{"{", 
+              RowBox[{"times", ",", "energies"}], "}"}], "]"}], ",", 
+            RowBox[{"PlotStyle", "->", 
+             RowBox[{"{", 
+              RowBox[{"Blue", ",", "Thick"}], "}"}]}], ",", 
+            RowBox[{"AxesLabel", "->", 
+             RowBox[{"{", 
+              RowBox[{"\"\<Time (t)\>\"", ",", "\"\<Energy\>\""}], "}"}]}], ",", 
+            RowBox[{"GridLines", "->", "Automatic"}], ",", 
+            RowBox[{"PlotRange", "->", "All"}], ",", 
+            RowBox[{"ImageSize", "->", "Large"}]}], "]"}], ",", 
+          RowBox[{"ListPlot", "[", 
+           RowBox[{
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"t", ",", "referenceEnergy"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"t", ",", "0", ",", 
+                RowBox[{"steps", "*", "timestep"}], ",", "0.01"}], "}"}]}], 
+             "]"}], ",", 
+            RowBox[{"PlotStyle", "->", 
+             RowBox[{"{", 
+              RowBox[{"Red", ",", "Dashed", ",", "Thick"}], "}"}]}]}], 
+           "]"}]}], "]"}]}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "timestep", ",", "0.5", ",", "\"\<Time Step (\[CapitalDelta]t)\>\""}],
+         "}"}], ",", "0.1", ",", 
+       RowBox[{"2", " ", "Pi"}], ",", "0.1", ",", 
+       RowBox[{"Appearance", "->", "\"\<Labeled\>\""}]}], "}"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"energyPlotSymplecticEuler", "[", 
+    RowBox[{
+     RowBox[{"initialCondition_", ":", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "1"}], "}"}]}], ",", 
+     RowBox[{"steps_", ":", "12"}]}], "]"}], ":=", 
+   RowBox[{"Manipulate", "[", 
+    RowBox[{
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\[CapitalDelta]t", "=", "timestep"}], ",", "data", ",", 
+         "energies", ",", "times", ",", "referenceEnergy"}], "}"}], ",", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Evolve", " ", "the", " ", "initial", " ", "condition", " ", "using", 
+         " ", "Symplectic", " ", "Euler"}], "*)"}], 
+       RowBox[{
+        RowBox[{"data", "=", 
+         RowBox[{"NestList", "[", 
+          RowBox[{
+           RowBox[{"Function", "[", 
+            RowBox[{
+             RowBox[{"{", "state", "}"}], ",", 
+             RowBox[{"Module", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"q", ",", "p", ",", "qNew", ",", "pNew"}], "}"}], ",", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"q", ",", "p"}], "}"}], "=", "state"}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"qNew", "=", 
+                 RowBox[{"q", "+", 
+                  RowBox[{"\[CapitalDelta]t", " ", "p"}]}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"pNew", "=", 
+                 RowBox[{"p", "-", 
+                  RowBox[{"\[CapitalDelta]t", " ", "qNew"}]}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"qNew", ",", "pNew"}], "}"}]}]}], "]"}]}], "]"}], ",",
+            "initialCondition", ",", "steps"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Compute", " ", 
+           RowBox[{"energy", ":", "E"}]}], "=", 
+          RowBox[{
+           RowBox[{"1", "/", "2"}], " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"q", "^", "2"}], "+", 
+             RowBox[{"p", "^", "2"}]}], ")"}]}]}], "*)"}], 
+        RowBox[{"energies", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"1", "/", "2"}], ")"}], " ", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"#", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "^", "2"}], "+", 
+              RowBox[{
+               RowBox[{"#", "[", 
+                RowBox[{"[", "2", "]"}], "]"}], "^", "2"}]}], ")"}]}], "&"}], 
+          "/@", "data"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Time", " ", "steps"}], "*)"}], 
+        RowBox[{"times", "=", 
+         RowBox[{"\[CapitalDelta]t", "*", 
+          RowBox[{"Range", "[", 
+           RowBox[{"0", ",", "steps"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Reference", " ", "energy"}], "*)"}], 
+        RowBox[{"referenceEnergy", "=", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"initialCondition", "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "^", "2"}], "+", 
+            RowBox[{
+             RowBox[{"initialCondition", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "^", "2"}]}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "Energy", " ", "plot", " ", "with", " ", "reference", " ", "line"}], 
+         "*)"}], 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"ListLinePlot", "[", 
+           RowBox[{
+            RowBox[{"Transpose", "[", 
+             RowBox[{"{", 
+              RowBox[{"times", ",", "energies"}], "}"}], "]"}], ",", 
+            RowBox[{"PlotStyle", "->", 
+             RowBox[{"{", 
+              RowBox[{"Blue", ",", "Thick"}], "}"}]}], ",", 
+            RowBox[{"AxesLabel", "->", 
+             RowBox[{"{", 
+              RowBox[{"\"\<Time (t)\>\"", ",", "\"\<Energy\>\""}], "}"}]}], ",", 
+            RowBox[{"GridLines", "->", "Automatic"}], ",", 
+            RowBox[{"PlotRange", "->", "All"}], ",", 
+            RowBox[{"ImageSize", "->", "Large"}]}], "]"}], ",", 
+          RowBox[{"ListPlot", "[", 
+           RowBox[{
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"t", ",", "referenceEnergy"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"t", ",", "0", ",", 
+                RowBox[{"steps", " ", "\[CapitalDelta]t"}], ",", "0.01"}], 
+               "}"}]}], "]"}], ",", 
+            RowBox[{"PlotStyle", "->", 
+             RowBox[{"{", 
+              RowBox[{"Red", ",", "Dashed"}], "}"}]}]}], "]"}]}], "]"}]}]}], 
+      "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "timestep", ",", "0.5", ",", "\"\<Time Step (\[CapitalDelta]t)\>\""}],
+         "}"}], ",", "0.1", ",", 
+       RowBox[{"2", " ", "Pi"}], ",", "0.1", ",", 
+       RowBox[{"Appearance", "->", "\"\<Labeled\>\""}]}], "}"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"energyPlotLeapfrog", "[", 
+   RowBox[{
     RowBox[{"initialCondition_", ":", 
      RowBox[{"{", 
       RowBox[{"0", ",", "1"}], "}"}]}], ",", 
@@ -527,39 +1053,74 @@ Cell[BoxData[
     RowBox[{"Module", "[", 
      RowBox[{
       RowBox[{"{", 
-       RowBox[{"Tmat", ",", "data", ",", "energies", ",", "times"}], "}"}], ",",
-       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\[CapitalDelta]t", "=", "timestep"}], ",", "data", ",", 
+        "energies", ",", "times", ",", "referenceEnergy"}], "}"}], ",", 
       RowBox[{"(*", 
        RowBox[{
-       "Evaluate", " ", "the", " ", "transformation", " ", "matrix", " ", 
-        "with", " ", "the", " ", "current", " ", "timestep"}], "*)"}], 
-      "\[IndentingNewLine]", 
+       "Evolve", " ", "the", " ", "initial", " ", "condition", " ", "using", " ",
+         "Leapfrog", " ", 
+        RowBox[{"(", 
+         RowBox[{"Velocity", " ", "Verlet"}], ")"}]}], "*)"}], 
       RowBox[{
-       RowBox[{"Tmat", "=", 
-        RowBox[{"transformationMatrixTemplate", "/.", " ", 
-         RowBox[{"t", "->", "timestep"}]}]}], ";", "\[IndentingNewLine]", 
-       "\[IndentingNewLine]", 
-       RowBox[{"(*", 
-        RowBox[{"Evolve", " ", "the", " ", "initial", " ", "condition"}], 
-        "*)"}], "\[IndentingNewLine]", 
        RowBox[{"data", "=", 
         RowBox[{"NestList", "[", 
          RowBox[{
-          RowBox[{
-           RowBox[{"Tmat", ".", "#"}], "&"}], ",", "initialCondition", ",", 
-          "steps"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Function", "[", 
+           RowBox[{
+            RowBox[{"{", "state", "}"}], ",", 
+            RowBox[{"Module", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+               "q", ",", "p", ",", "pHalf", ",", "qNew", ",", "pNew"}], "}"}],
+               ",", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"q", ",", "p"}], "}"}], "=", "state"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"pHalf", "=", 
+                RowBox[{"p", "-", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"\[CapitalDelta]t", "/", "2"}], ")"}], " ", 
+                  "q"}]}]}], ";", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"1.", " ", "Half"}], "-", 
+                 RowBox[{"step", " ", "momentum", " ", "update"}]}], "*)"}], 
+               RowBox[{"qNew", "=", 
+                RowBox[{"q", "+", 
+                 RowBox[{"\[CapitalDelta]t", " ", "pHalf"}]}]}], ";", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"2.", " ", "Full"}], "-", 
+                 RowBox[{"step", " ", "position", " ", "update"}]}], "*)"}], 
+               RowBox[{"pNew", "=", 
+                RowBox[{"pHalf", "-", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"\[CapitalDelta]t", "/", "2"}], ")"}], " ", 
+                  "qNew"}]}]}], ";", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"3.", " ", "Final", " ", "half"}], "-", 
+                 RowBox[{"step", " ", "momentum", " ", "update"}]}], "*)"}], 
+               RowBox[{"{", 
+                RowBox[{"qNew", ",", "pNew"}], "}"}]}]}], "]"}]}], "]"}], ",",
+           "initialCondition", ",", "steps"}], "]"}]}], ";", 
        "\[IndentingNewLine]", 
        RowBox[{"(*", 
         RowBox[{
          RowBox[{"Compute", " ", 
-          RowBox[{"energies", ":", "E"}]}], "=", 
+          RowBox[{"energy", ":", "E"}]}], "=", 
          RowBox[{
           RowBox[{"1", "/", "2"}], " ", 
           RowBox[{"(", 
            RowBox[{
             RowBox[{"q", "^", "2"}], "+", 
             RowBox[{"p", "^", "2"}]}], ")"}]}]}], "*)"}], 
-       "\[IndentingNewLine]", 
        RowBox[{"energies", "=", 
         RowBox[{
          RowBox[{
@@ -574,33 +1135,65 @@ Cell[BoxData[
              RowBox[{
               RowBox[{"#", "[", 
                RowBox[{"[", "2", "]"}], "]"}], "^", "2"}]}], ")"}]}], "&"}], "/@",
-          "data"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          "data"}]}], ";", "\[IndentingNewLine]", 
        RowBox[{"(*", 
-        RowBox[{"Compute", " ", "corresponding", " ", "times"}], "*)"}], 
-       "\[IndentingNewLine]", 
+        RowBox[{"Time", " ", "steps"}], "*)"}], 
        RowBox[{"times", "=", 
-        RowBox[{"timestep", "*", 
+        RowBox[{"\[CapitalDelta]t", "*", 
          RowBox[{"Range", "[", 
           RowBox[{"0", ",", "steps"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+       
+       RowBox[{"(*", 
+        RowBox[{
+        "Reference", " ", "energy", " ", "from", " ", "initial", " ", 
+         "condition"}], "*)"}], 
+       RowBox[{"referenceEnergy", "=", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "/", "2"}], ")"}], " ", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"initialCondition", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "^", "2"}], "+", 
+           RowBox[{
+            RowBox[{"initialCondition", "[", 
+             RowBox[{"[", "2", "]"}], "]"}], "^", "2"}]}], ")"}]}]}], ";", 
        "\[IndentingNewLine]", 
        RowBox[{"(*", 
-        RowBox[{"Plot", " ", "energy", " ", 
-         RowBox[{"vs", ".", "time"}]}], "*)"}], "\[IndentingNewLine]", 
-       RowBox[{"ListLinePlot", "[", 
         RowBox[{
-         RowBox[{"Transpose", "[", 
-          RowBox[{"{", 
-           RowBox[{"times", ",", "energies"}], "}"}], "]"}], ",", 
-         RowBox[{"PlotStyle", "->", 
-          RowBox[{"{", 
-           RowBox[{"Red", ",", "Thick"}], "}"}]}], ",", 
-         RowBox[{"AxesLabel", "->", 
-          RowBox[{"{", 
-           RowBox[{"\"\<Time (t)\>\"", ",", "\"\<Energy\>\""}], "}"}]}], ",", 
-         
-         RowBox[{"PlotRange", "->", "All"}], ",", 
-         RowBox[{"GridLines", "->", "Automatic"}], ",", 
-         RowBox[{"ImageSize", "->", "Large"}]}], "]"}]}]}], "]"}], ",", 
+        "Energy", " ", "plot", " ", "with", " ", "reference", " ", "line"}], 
+        "*)"}], 
+       RowBox[{"Show", "[", 
+        RowBox[{
+         RowBox[{"ListLinePlot", "[", 
+          RowBox[{
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{"times", ",", "energies"}], "}"}], "]"}], ",", 
+           RowBox[{"PlotStyle", "->", 
+            RowBox[{"{", 
+             RowBox[{"Blue", ",", "Thick"}], "}"}]}], ",", 
+           RowBox[{"AxesLabel", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<Time (t)\>\"", ",", "\"\<Energy\>\""}], "}"}]}], ",", 
+           RowBox[{"GridLines", "->", "Automatic"}], ",", 
+           RowBox[{"PlotRange", "->", "All"}], ",", 
+           RowBox[{"ImageSize", "->", "Large"}]}], "]"}], ",", 
+         RowBox[{"ListPlot", "[", 
+          RowBox[{
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"t", ",", "referenceEnergy"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"t", ",", "0", ",", 
+               RowBox[{"steps", " ", "\[CapitalDelta]t"}], ",", "0.01"}], 
+              "}"}]}], "]"}], ",", 
+           RowBox[{"PlotStyle", "->", 
+            RowBox[{"{", 
+             RowBox[{"Red", ",", "Dashed", ",", "Thick"}], "}"}]}]}], "]"}]}],
+         "]"}]}]}], "]"}], ",", 
     RowBox[{"{", 
      RowBox[{
       RowBox[{"{", 
@@ -609,21 +1202,28 @@ Cell[BoxData[
        "}"}], ",", "0.1", ",", 
       RowBox[{"2", " ", "Pi"}], ",", "0.1", ",", 
       RowBox[{"Appearance", "->", "\"\<Labeled\>\""}]}], "}"}]}], 
-   "\[IndentingNewLine]", "]"}]}]], "Input",
+   "]"}]}]}], "Input",
  CellChangeTimes->{{3.957492691128496*^9, 3.957492709524953*^9}, 
    3.957492759802185*^9, 3.9574928504557047`*^9, {3.9574931676914186`*^9, 
-   3.9574932087963867`*^9}},ExpressionUUID->"d96582a1-5647-4008-be0b-\
-60fabbe9bf3c"]
-}, Open  ]]
-}, Open  ]],
+   3.9574932087963867`*^9}, {3.957494049398039*^9, 3.957494050490601*^9}, 
+   3.957494253110183*^9, 3.957494298516426*^9, {3.9575080488859043`*^9, 
+   3.957508065966261*^9}, 3.957508910674569*^9, 3.957509031859005*^9, 
+   3.957509099620994*^9, 3.9575091620709743`*^9, 3.957509218714733*^9, {
+   3.957509299770403*^9, 3.95750932899577*^9}, 3.9575093762384663`*^9, 
+   3.957509471961905*^9, 3.957509517194458*^9},
+ CellLabel->
+  "In[180]:=",ExpressionUUID->"d96582a1-5647-4008-be0b-60fabbe9bf3c"]
+}, Closed]]
+}, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["2.2 Exact solution", "Subsection",
+Cell["1.2 Exact solution", "Subsection",
  CellChangeTimes->{{3.957333830586548*^9, 3.957333839748974*^9}, {
    3.9573710802428513`*^9, 3.95737108354781*^9}, 3.95748762725854*^9, {
    3.957491482093812*^9, 3.957491483785733*^9}, {3.957491986969899*^9, 
-   3.9574919891446333`*^9}},ExpressionUUID->"38905920-e9b8-422e-94a7-\
+   3.9574919891446333`*^9}, {3.957510868113968*^9, 
+   3.95751086829847*^9}},ExpressionUUID->"38905920-e9b8-422e-94a7-\
 ee83f6570a70"],
 
 Cell[CellGroupData[{
@@ -660,12 +1260,12 @@ Cell[BoxData[
   3.957371091504374*^9, {3.957491488662683*^9, 3.957491513514743*^9}, {
    3.9574919970223846`*^9, 3.957492003289343*^9}, {3.957492765366477*^9, 
    3.95749276566676*^9}},
- CellLabel->"In[52]:=",ExpressionUUID->"6e626638-43ae-489f-9f2f-e25429071795"],
+ CellLabel->"In[81]:=",ExpressionUUID->"6e626638-43ae-489f-9f2f-e25429071795"],
 
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`timestep$$ = 0.5, Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`timestep$$ = 0.6, Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{{
@@ -703,10 +1303,14 @@ $CellContext`timestep$$]; $CellContext`data$ = Table[
                
                Part[$CellContext`data$, 
                 1, $CellContext`step]]]}, {$CellContext`step, 1, 12 + 1}], {
-           Blue, 
+           Red, 
+            PointSize[0.02], 
+            Point[
+             Part[$CellContext`data$, 1]]}, {Blue, 
             PointSize[0.015], 
             Point[
-             Flatten[$CellContext`data$, 1]]}, 
+             Flatten[
+              Drop[$CellContext`data$, 1], 1]]}, 
            Table[
             If[$CellContext`i == 1, {Red, 
               Text[
@@ -719,7 +1323,10 @@ $CellContext`timestep$$]; $CellContext`data$ = Table[
                  1, $CellContext`i] + $CellContext`labelOffset$]}], \
 {$CellContext`i, 1, 
              Length[
-              Part[$CellContext`data$, 1]]}]}, Axes -> True, 
+              Part[$CellContext`data$, 1]]}], {
+            Darker[Gray, 0.4], Thick, 
+            Line[
+             Part[$CellContext`data$, 1]]}}, Axes -> True, 
           AxesLabel -> {"Position (q)", "Momentum (p)"}, 
           PlotRange -> {{-2, 2}, {-2, 2}}, AspectRatio -> 1, Background -> 
           LightGray]], 
@@ -739,19 +1346,20 @@ $CellContext`timestep$$]; $CellContext`data$ = Table[
   Manipulate`InterpretManipulate[1]]], "Output",
  CellChangeTimes->{3.957491514345653*^9, 3.9574920040778008`*^9, 
   3.957492047447421*^9, 3.9574920823614397`*^9, 3.9574927668286457`*^9, 
-  3.957492858736199*^9},
- CellLabel->"Out[52]=",ExpressionUUID->"7aa72d59-4017-46fd-8d48-ca11e2c550b8"],
+  3.957492858736199*^9, 3.957493699169909*^9, 3.957493799264827*^9, 
+  3.9574943019321632`*^9},
+ CellLabel->"Out[81]=",ExpressionUUID->"4e10da94-e256-4c09-9687-782892ab58db"],
 
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`timestep$$ = 0.5, Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`timestep$$ = 0.9, Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{{
        Hold[$CellContext`timestep$$], 0.5, "Time Step (\[CapitalDelta]t)"}, 
       0.1, 2 Pi, 0.1, ControlType -> Manipulator}}, Typeset`size$$ = {
-    576., {172.65365980641576`, 178.38559340016576`}}, Typeset`update$$ = 0, 
+    576., {172.65365980641573`, 178.38559340016573`}}, Typeset`update$$ = 0, 
     Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
     Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
     DynamicBox[Manipulate`ManipulateBoxes[
@@ -764,7 +1372,8 @@ Cell[BoxData[
          Typeset`skipInitDone$$, Typeset`keyframeActionsQ$$, 
         Typeset`keyframeList$$}, "Body" :> 
       Module[{$CellContext`Tmat$, $CellContext`data$, $CellContext`energies$, \
-$CellContext`times$}, $CellContext`Tmat$ = ReplaceAll[{{
+$CellContext`times$, $CellContext`referenceEnergy$}, $CellContext`Tmat$ = 
+         ReplaceAll[{{
              Cos[$CellContext`t], 
              Sin[$CellContext`t]}, {-Sin[$CellContext`t], 
              
@@ -774,15 +1383,23 @@ $CellContext`timestep$$]; $CellContext`data$ =
           Dot[$CellContext`Tmat$, #]& , {0, 1}, 12]; $CellContext`energies$ = 
          Map[(1/2) (Part[#, 1]^2 + 
             Part[#, 2]^2)& , $CellContext`data$]; $CellContext`times$ = \
-$CellContext`timestep$$ Range[0, 12]; ListLinePlot[
-          Transpose[{$CellContext`times$, $CellContext`energies$}], 
-          PlotStyle -> {Red, Thick}, AxesLabel -> {"Time (t)", "Energy"}, 
-          PlotRange -> All, GridLines -> Automatic, ImageSize -> Large]], 
+$CellContext`timestep$$ 
+          Range[0, 12]; $CellContext`referenceEnergy$ = (1/2) (
+           Part[{0, 1}, 1]^2 + Part[{0, 1}, 2]^2); Show[
+          ListLinePlot[
+           Transpose[{$CellContext`times$, $CellContext`energies$}], 
+           PlotStyle -> {Blue, Thick}, AxesLabel -> {"Time (t)", "Energy"}, 
+           GridLines -> Automatic, PlotRange -> All, ImageSize -> Large], 
+          ListPlot[
+           
+           Table[{$CellContext`t, $CellContext`referenceEnergy$}, \
+{$CellContext`t, 0, 12 $CellContext`timestep$$, 0.01}], 
+           PlotStyle -> {Red, Dashed, Thick}]]], 
       "Specifications" :> {{{$CellContext`timestep$$, 0.5, 
           "Time Step (\[CapitalDelta]t)"}, 0.1, 2 Pi, 0.1, Appearance -> 
          "Labeled"}}, "Options" :> {}, "DefaultOptions" :> {}],
      ImageSizeCache->{
-      625.0999999999999, {220.32408522145482`, 226.05601881520482`}},
+      625.0999999999999, {220.3240852214548, 226.0560188152048}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -795,16 +1412,18 @@ $CellContext`timestep$$ Range[0, 12]; ListLinePlot[
   Manipulate`InterpretManipulate[1]]], "Output",
  CellChangeTimes->{3.957491514345653*^9, 3.9574920040778008`*^9, 
   3.957492047447421*^9, 3.9574920823614397`*^9, 3.9574927668286457`*^9, 
-  3.957492858764079*^9},
- CellLabel->"Out[53]=",ExpressionUUID->"775da230-6f0c-4258-956e-3d0a90cbe517"]
+  3.957492858736199*^9, 3.957493699169909*^9, 3.957493799264827*^9, 
+  3.95749430196497*^9},
+ CellLabel->"Out[82]=",ExpressionUUID->"28482d30-2246-4a87-a44e-35abfd46b680"]
 }, Open  ]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["2.3 Forward Euler", "Subsection",
- CellChangeTimes->{{3.957492022120099*^9, 
-  3.957492029881754*^9}},ExpressionUUID->"e5ba56b6-b95b-4a29-8d30-\
+Cell["1.3 Forward Euler", "Subsection",
+ CellChangeTimes->{{3.957492022120099*^9, 3.957492029881754*^9}, {
+  3.957510869954653*^9, 
+  3.957510870135294*^9}},ExpressionUUID->"e5ba56b6-b95b-4a29-8d30-\
 d8528be0340c"],
 
 Cell[CellGroupData[{
@@ -828,12 +1447,12 @@ Cell[BoxData[{
       RowBox[{"-", "t"}], ",", "1"}], "}"}]}], "}"}], "]"}]}], "Input",
  CellChangeTimes->{
   3.957492034143648*^9, {3.9574928724627123`*^9, 3.957492879418705*^9}},
- CellLabel->"In[54]:=",ExpressionUUID->"567e95ca-ddfa-461e-a231-07afc2858cf9"],
+ CellLabel->"In[83]:=",ExpressionUUID->"567e95ca-ddfa-461e-a231-07afc2858cf9"],
 
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`timestep$$ = 0.5, Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`timestep$$ = 0.4, Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{{
@@ -870,10 +1489,14 @@ $CellContext`data$ = Table[
                
                Part[$CellContext`data$, 
                 1, $CellContext`step]]]}, {$CellContext`step, 1, 12 + 1}], {
-           Blue, 
+           Red, 
+            PointSize[0.02], 
+            Point[
+             Part[$CellContext`data$, 1]]}, {Blue, 
             PointSize[0.015], 
             Point[
-             Flatten[$CellContext`data$, 1]]}, 
+             Flatten[
+              Drop[$CellContext`data$, 1], 1]]}, 
            Table[
             If[$CellContext`i == 1, {Red, 
               Text[
@@ -886,7 +1509,10 @@ $CellContext`data$ = Table[
                  1, $CellContext`i] + $CellContext`labelOffset$]}], \
 {$CellContext`i, 1, 
              Length[
-              Part[$CellContext`data$, 1]]}]}, Axes -> True, 
+              Part[$CellContext`data$, 1]]}], {
+            Darker[Gray, 0.4], Thick, 
+            Line[
+             Part[$CellContext`data$, 1]]}}, Axes -> True, 
           AxesLabel -> {"Position (q)", "Momentum (p)"}, 
           PlotRange -> {{-2, 2}, {-2, 2}}, AspectRatio -> 1, Background -> 
           LightGray]], 
@@ -905,19 +1531,19 @@ $CellContext`data$ = Table[
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
  CellChangeTimes->{3.9574920352659483`*^9, 3.957492085463069*^9, 
-  3.957492880115592*^9},
- CellLabel->"Out[54]=",ExpressionUUID->"8a1af8e0-a129-415e-9f1e-825dd6b98cf2"],
+  3.957492880115592*^9, 3.957494309091597*^9},
+ CellLabel->"Out[83]=",ExpressionUUID->"c1e28dba-017d-4607-804a-20db27415b8c"],
 
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`timestep$$ = 0.5, Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`timestep$$ = 0.1, Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{{
        Hold[$CellContext`timestep$$], 0.5, "Time Step (\[CapitalDelta]t)"}, 
       0.1, 2 Pi, 0.1, ControlType -> Manipulator}}, Typeset`size$$ = {
-    576., {172.98093415250912`, 178.71286774625912`}}, Typeset`update$$ = 0, 
+    576., {167.31603840362368`, 173.04797199737368`}}, Typeset`update$$ = 0, 
     Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
     Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
     DynamicBox[Manipulate`ManipulateBoxes[
@@ -930,7 +1556,7 @@ Cell[BoxData[
          Typeset`skipInitDone$$, Typeset`keyframeActionsQ$$, 
         Typeset`keyframeList$$}, "Body" :> 
       Module[{$CellContext`Tmat$, $CellContext`data$, $CellContext`energies$, \
-$CellContext`times$}, $CellContext`Tmat$ = 
+$CellContext`times$, $CellContext`referenceEnergy$}, $CellContext`Tmat$ = 
          ReplaceAll[{{
             1, $CellContext`t}, {-$CellContext`t, 
              1}}, $CellContext`t -> $CellContext`timestep$$]; \
@@ -939,15 +1565,23 @@ $CellContext`data$ =
           Dot[$CellContext`Tmat$, #]& , {0, 1}, 12]; $CellContext`energies$ = 
          Map[(1/2) (Part[#, 1]^2 + 
             Part[#, 2]^2)& , $CellContext`data$]; $CellContext`times$ = \
-$CellContext`timestep$$ Range[0, 12]; ListLinePlot[
-          Transpose[{$CellContext`times$, $CellContext`energies$}], 
-          PlotStyle -> {Red, Thick}, AxesLabel -> {"Time (t)", "Energy"}, 
-          PlotRange -> All, GridLines -> Automatic, ImageSize -> Large]], 
+$CellContext`timestep$$ 
+          Range[0, 12]; $CellContext`referenceEnergy$ = (1/2) (
+           Part[{0, 1}, 1]^2 + Part[{0, 1}, 2]^2); Show[
+          ListLinePlot[
+           Transpose[{$CellContext`times$, $CellContext`energies$}], 
+           PlotStyle -> {Blue, Thick}, AxesLabel -> {"Time (t)", "Energy"}, 
+           GridLines -> Automatic, PlotRange -> All, ImageSize -> Large], 
+          ListPlot[
+           
+           Table[{$CellContext`t, $CellContext`referenceEnergy$}, \
+{$CellContext`t, 0, 12 $CellContext`timestep$$, 0.01}], 
+           PlotStyle -> {Red, Dashed, Thick}]]], 
       "Specifications" :> {{{$CellContext`timestep$$, 0.5, 
           "Time Step (\[CapitalDelta]t)"}, 0.1, 2 Pi, 0.1, Appearance -> 
          "Labeled"}}, "Options" :> {}, "DefaultOptions" :> {}],
      ImageSizeCache->{
-      625.0999999999999, {220.65135956754818`, 226.38329316129818`}},
+      625.0999999999999, {214.98646381866274`, 220.71839741241274`}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -959,43 +1593,375 @@ $CellContext`timestep$$ Range[0, 12]; ListLinePlot[
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
  CellChangeTimes->{3.9574920352659483`*^9, 3.957492085463069*^9, 
-  3.957492880151865*^9},
- CellLabel->"Out[55]=",ExpressionUUID->"ae482ef0-e4ae-4244-8873-10d0ed7eaca7"]
+  3.957492880115592*^9, 3.9574943091200647`*^9},
+ CellLabel->"Out[84]=",ExpressionUUID->"cf1ea56c-9c2c-4cf1-a12a-8e52f88f1666"]
 }, Open  ]]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["2.3 Symplectic Euler", "Subsection",
- CellChangeTimes->{{3.957487663195587*^9, 
-  3.957487669428524*^9}},ExpressionUUID->"c13497fc-8c82-47be-8abd-\
-bdcb4c4f8a29"],
-
-Cell["", "Text",ExpressionUUID->"a5eaa250-fcca-465f-8a67-e95b14f4939e"]
 }, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["2.4 Leapfrog (Velocity Verlet)", "Subsection",
+Cell["1.3 Symplectic Euler", "Subsection",
+ CellChangeTimes->{{3.957487663195587*^9, 3.957487669428524*^9}, {
+  3.957510871312766*^9, 
+  3.9575108714878483`*^9}},ExpressionUUID->"c13497fc-8c82-47be-8abd-\
+bdcb4c4f8a29"],
+
+Cell["", "Text",
+ CellChangeTimes->{
+  3.957493615724914*^9},ExpressionUUID->"a5eaa250-fcca-465f-8a67-\
+e95b14f4939e"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"phasePortraitSymplecticEuler", "[", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"energyPlotSymplecticEuler", "[", "]"}]}], "Input",
+ CellChangeTimes->{
+  3.957493620095336*^9, {3.957494063759235*^9, 3.957494064075892*^9}},
+ CellLabel->"In[85]:=",ExpressionUUID->"1b224b6c-d2e5-43a8-b664-07d205eb7985"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`timestep$$ = 0.5, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`timestep$$], 0.5, "Time Step (\[CapitalDelta]t)"}, 
+      0.1, 2 Pi, 0.1, ControlType -> Manipulator}}, Typeset`size$$ = {
+    360., {156.25881618923611`, 161.99074978298611`}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
+    Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`timestep$$ = 0.5}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$, Typeset`keyframeActionsQ$$, 
+        Typeset`keyframeList$$}, "Body" :> 
+      Module[{$CellContext`\[CapitalDelta]t$ = $CellContext`timestep$$, \
+$CellContext`data$, $CellContext`labelOffset$}, $CellContext`data$ = Table[
+           NestList[
+            Function[{$CellContext`state$}, 
+             
+             Module[{$CellContext`q$, $CellContext`p$, $CellContext`qNew$, \
+$CellContext`pNew$}, {$CellContext`q$, $CellContext`p$} = $CellContext`state$; \
+$CellContext`qNew$ = $CellContext`q$ + $CellContext`\[CapitalDelta]t$ \
+$CellContext`p$; $CellContext`pNew$ = $CellContext`p$ - $CellContext`\
+\[CapitalDelta]t$ $CellContext`qNew$; {$CellContext`qNew$, \
+$CellContext`pNew$}]], $CellContext`ic, 
+            12], {$CellContext`ic, {{0, 1}, {0.1, 1}, {0.1, 1.1}, {
+             0, 1.1}}}]; $CellContext`labelOffset$ = {0.2, 0.2}; 
+        Graphics[{LightGray, 
+           Circle[{0, 0}, 1], 
+           Table[{Black, Thick, 
+             Line[
+              Append[
+               Part[$CellContext`data$, All, $CellContext`step], 
+               
+               Part[$CellContext`data$, 
+                1, $CellContext`step]]]}, {$CellContext`step, 1, 12 + 1}], {
+           Red, 
+            PointSize[0.02], 
+            Point[
+             Part[$CellContext`data$, 1]]}, {Blue, 
+            PointSize[0.015], 
+            Point[
+             Flatten[
+              Drop[$CellContext`data$, 1], 1]]}, 
+           Table[
+            If[$CellContext`i == 1, {Red, 
+              Text[
+               Style["t0", 14, Bold], 
+               Part[$CellContext`data$, 
+                 1, $CellContext`i] + $CellContext`labelOffset$]}, {Black, 
+              Text[
+               Style["t" <> ToString[$CellContext`i - 1], 14, Bold], 
+               Part[$CellContext`data$, 
+                 1, $CellContext`i] + $CellContext`labelOffset$]}], \
+{$CellContext`i, 1, 
+             Length[
+              Part[$CellContext`data$, 1]]}], {
+            Darker[Gray, 0.4], Thick, 
+            Line[
+             Part[$CellContext`data$, 1]]}}, Axes -> True, 
+          AxesLabel -> {"Position (q)", "Momentum (p)"}, 
+          PlotRange -> {{-2, 2}, {-2, 2}}, AspectRatio -> 1, Background -> 
+          LightGray]], 
+      "Specifications" :> {{{$CellContext`timestep$$, 0.5, 
+          "Time Step (\[CapitalDelta]t)"}, 0.1, 2 Pi, 0.1, Appearance -> 
+         "Labeled"}}, "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{409.1, {203.92924160427518`, 209.66117519802518`}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.957493620731567*^9, 3.957493868557447*^9, 
+  3.9574940646596518`*^9, 3.95749425902875*^9, 3.9574943165302467`*^9},
+ CellLabel->"Out[85]=",ExpressionUUID->"d6e292f7-a8d5-4ea8-ab9d-64e9290715a9"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`timestep$$ = 1.5000000000000002`, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`timestep$$], 0.5, "Time Step (\[CapitalDelta]t)"}, 
+      0.1, 2 Pi, 0.1, ControlType -> Manipulator}}, Typeset`size$$ = {
+    576., {172.65365980641576`, 178.38559340016576`}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
+    Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`timestep$$ = 0.5}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$, Typeset`keyframeActionsQ$$, 
+        Typeset`keyframeList$$}, "Body" :> 
+      Module[{$CellContext`\[CapitalDelta]t$ = $CellContext`timestep$$, \
+$CellContext`data$, $CellContext`energies$, $CellContext`times$, \
+$CellContext`referenceEnergy$}, $CellContext`data$ = NestList[
+           Function[{$CellContext`state$}, 
+            
+            Module[{$CellContext`q$, $CellContext`p$, $CellContext`qNew$, \
+$CellContext`pNew$}, {$CellContext`q$, $CellContext`p$} = $CellContext`state$; \
+$CellContext`qNew$ = $CellContext`q$ + $CellContext`\[CapitalDelta]t$ \
+$CellContext`p$; $CellContext`pNew$ = $CellContext`p$ - $CellContext`\
+\[CapitalDelta]t$ $CellContext`qNew$; {$CellContext`qNew$, \
+$CellContext`pNew$}]], {0, 1}, 12]; $CellContext`energies$ = 
+         Map[(1/2) (Part[#, 1]^2 + 
+            Part[#, 2]^2)& , $CellContext`data$]; $CellContext`times$ = \
+$CellContext`\[CapitalDelta]t$ 
+          Range[0, 12]; $CellContext`referenceEnergy$ = (1/2) (
+           Part[{0, 1}, 1]^2 + Part[{0, 1}, 2]^2); Show[
+          ListLinePlot[
+           Transpose[{$CellContext`times$, $CellContext`energies$}], 
+           PlotStyle -> {Blue, Thick}, AxesLabel -> {"Time (t)", "Energy"}, 
+           GridLines -> Automatic, PlotRange -> All, ImageSize -> Large], 
+          ListPlot[
+           
+           Table[{$CellContext`t, $CellContext`referenceEnergy$}, \
+{$CellContext`t, 0, 12 $CellContext`\[CapitalDelta]t$, 0.01}], 
+           PlotStyle -> {Red, Dashed}]]], 
+      "Specifications" :> {{{$CellContext`timestep$$, 0.5, 
+          "Time Step (\[CapitalDelta]t)"}, 0.1, 2 Pi, 0.1, Appearance -> 
+         "Labeled"}}, "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{
+      625.0999999999999, {220.32408522145482`, 226.05601881520482`}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.957493620731567*^9, 3.957493868557447*^9, 
+  3.9574940646596518`*^9, 3.95749425902875*^9, 3.957494316559449*^9},
+ CellLabel->"Out[86]=",ExpressionUUID->"fc99fea3-1396-492d-9c97-0641965f17fd"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["1.4 Leapfrog (Velocity Verlet)", "Subsection",
  CellChangeTimes->{{3.9573338596644087`*^9, 3.957333866270401*^9}, {
-  3.957487685769636*^9, 
-  3.9574877024927893`*^9}},ExpressionUUID->"582247d2-6330-4323-9add-\
+  3.957487685769636*^9, 3.9574877024927893`*^9}, {3.957510872895686*^9, 
+  3.957510873108858*^9}},ExpressionUUID->"582247d2-6330-4323-9add-\
 cef274729921"],
 
-Cell[BoxData[""], "Input",ExpressionUUID->"07b7d0cb-dc98-4664-8287-296297328946"]
-}, Open  ]]
-}, Open  ]],
+Cell[CellGroupData[{
 
-Cell["3. Conclusion ", "Section",
- CellChangeTimes->{
-  3.957333105422525*^9, {3.957333711437298*^9, 3.9573337168618813`*^9}, {
-   3.9573337510046787`*^9, 
-   3.957333753577173*^9}},ExpressionUUID->"d25b5afc-ecb9-4da1-b92f-\
-0e37bdbdca42"]
+Cell[BoxData[{
+ RowBox[{"phasePortraitLeapfrog", "[", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"energyPlotLeapfrog", "[", "]"}]}], "Input",
+ CellChangeTimes->{{3.957507309163795*^9, 3.957507314093184*^9}, {
+  3.957508071605012*^9, 3.957508092924102*^9}},
+ CellLabel->
+  "In[183]:=",ExpressionUUID->"07b7d0cb-dc98-4664-8287-296297328946"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`timestep$$ = 0.5, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`timestep$$], 0.5, "Time Step (\[CapitalDelta]t)"}, 
+      0.1, 2 Pi, 0.1, ControlType -> Manipulator}}, Typeset`size$$ = {
+    360., {156.25881618923611`, 161.99074978298611`}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
+    Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`timestep$$ = 0.5}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$, Typeset`keyframeActionsQ$$, 
+        Typeset`keyframeList$$}, "Body" :> 
+      Module[{$CellContext`\[CapitalDelta]t$ = $CellContext`timestep$$, \
+$CellContext`data$, $CellContext`labelOffset$}, $CellContext`data$ = Table[
+           NestList[
+            Function[{$CellContext`state$}, 
+             
+             Module[{$CellContext`q$, $CellContext`p$, $CellContext`pHalf$, \
+$CellContext`qNew$, $CellContext`pNew$}, {$CellContext`q$, $CellContext`p$} = \
+$CellContext`state$; $CellContext`pHalf$ = $CellContext`p$ - ($CellContext`\
+\[CapitalDelta]t$/
+                 2) $CellContext`q$; $CellContext`qNew$ = $CellContext`q$ + \
+$CellContext`\[CapitalDelta]t$ $CellContext`pHalf$; $CellContext`pNew$ = \
+$CellContext`pHalf$ - ($CellContext`\[CapitalDelta]t$/
+                 2) $CellContext`qNew$; {$CellContext`qNew$, \
+$CellContext`pNew$}]], $CellContext`ic, 
+            12], {$CellContext`ic, {{0, 1}, {0.1, 1}, {0.1, 1.1}, {
+             0, 1.1}}}]; $CellContext`labelOffset$ = {0.2, 0.2}; 
+        Graphics[{LightGray, 
+           Circle[{0, 0}, 1], 
+           Table[{Black, Thick, 
+             Line[
+              Append[
+               Part[$CellContext`data$, All, $CellContext`step], 
+               
+               Part[$CellContext`data$, 
+                1, $CellContext`step]]]}, {$CellContext`step, 1, 12 + 1}], {
+           Red, 
+            PointSize[0.02], 
+            Point[
+             Part[$CellContext`data$, 1]]}, {Blue, 
+            PointSize[0.015], 
+            Point[
+             Flatten[
+              Drop[$CellContext`data$, 1], 1]]}, 
+           Table[
+            If[$CellContext`i == 1, {Red, 
+              Text[
+               Style["t0", 14, Bold], 
+               Part[$CellContext`data$, 
+                 1, $CellContext`i] + $CellContext`labelOffset$]}, {Black, 
+              Text[
+               Style["t" <> ToString[$CellContext`i - 1], 14, Bold], 
+               Part[$CellContext`data$, 
+                 1, $CellContext`i] + $CellContext`labelOffset$]}], \
+{$CellContext`i, 1, 
+             Length[
+              Part[$CellContext`data$, 1]]}], {
+            Darker[Gray, 0.4], Thick, 
+            Line[
+             Part[$CellContext`data$, 1]]}}, Axes -> True, 
+          AxesLabel -> {"Position (q)", "Momentum (p)"}, 
+          PlotRange -> {{-2, 2}, {-2, 2}}, AspectRatio -> 1, Background -> 
+          LightGray]], 
+      "Specifications" :> {{{$CellContext`timestep$$, 0.5, 
+          "Time Step (\[CapitalDelta]t)"}, 0.1, 2 Pi, 0.1, Appearance -> 
+         "Labeled"}}, "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{409.1, {203.92924160427518`, 209.66117519802518`}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.957507314710457*^9, 3.957507981104125*^9, 
+  3.95750809325191*^9, 3.9575088714382753`*^9, 3.9575093040021133`*^9, 
+  3.957509411990735*^9, 3.957509548475789*^9},
+ CellLabel->
+  "Out[183]=",ExpressionUUID->"e13d8056-a5f3-4f63-9e69-90d7e048b838"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`timestep$$ = 1.5000000000000002`, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`timestep$$], 0.5, "Time Step (\[CapitalDelta]t)"}, 
+      0.1, 2 Pi, 0.1, ControlType -> Manipulator}}, Typeset`size$$ = {
+    576., {172.65365980641573`, 178.38559340016573`}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
+    Typeset`keyframeActionsQ$$ = False, Typeset`keyframeList$$ = {}}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`timestep$$ = 0.5}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$, Typeset`keyframeActionsQ$$, 
+        Typeset`keyframeList$$}, "Body" :> 
+      Module[{$CellContext`\[CapitalDelta]t$ = $CellContext`timestep$$, \
+$CellContext`data$, $CellContext`energies$, $CellContext`times$, \
+$CellContext`referenceEnergy$}, $CellContext`data$ = NestList[
+           Function[{$CellContext`state$}, 
+            
+            Module[{$CellContext`q$, $CellContext`p$, $CellContext`pHalf$, \
+$CellContext`qNew$, $CellContext`pNew$}, {$CellContext`q$, $CellContext`p$} = \
+$CellContext`state$; $CellContext`pHalf$ = $CellContext`p$ - ($CellContext`\
+\[CapitalDelta]t$/
+                2) $CellContext`q$; $CellContext`qNew$ = $CellContext`q$ + \
+$CellContext`\[CapitalDelta]t$ $CellContext`pHalf$; $CellContext`pNew$ = \
+$CellContext`pHalf$ - ($CellContext`\[CapitalDelta]t$/
+                2) $CellContext`qNew$; {$CellContext`qNew$, \
+$CellContext`pNew$}]], {0, 1}, 12]; $CellContext`energies$ = 
+         Map[(1/2) (Part[#, 1]^2 + 
+            Part[#, 2]^2)& , $CellContext`data$]; $CellContext`times$ = \
+$CellContext`\[CapitalDelta]t$ 
+          Range[0, 12]; $CellContext`referenceEnergy$ = (1/2) (
+           Part[{0, 1}, 1]^2 + Part[{0, 1}, 2]^2); Show[
+          ListLinePlot[
+           Transpose[{$CellContext`times$, $CellContext`energies$}], 
+           PlotStyle -> {Blue, Thick}, AxesLabel -> {"Time (t)", "Energy"}, 
+           GridLines -> Automatic, PlotRange -> All, ImageSize -> Large], 
+          ListPlot[
+           
+           Table[{$CellContext`t, $CellContext`referenceEnergy$}, \
+{$CellContext`t, 0, 12 $CellContext`\[CapitalDelta]t$, 0.01}], 
+           PlotStyle -> {Red, Dashed, Thick}]]], 
+      "Specifications" :> {{{$CellContext`timestep$$, 0.5, 
+          "Time Step (\[CapitalDelta]t)"}, 0.1, 2 Pi, 0.1, Appearance -> 
+         "Labeled"}}, "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{
+      625.0999999999999, {220.3240852214548, 226.0560188152048}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.957507314710457*^9, 3.957507981104125*^9, 
+  3.95750809325191*^9, 3.9575088714382753`*^9, 3.9575093040021133`*^9, 
+  3.957509411990735*^9, 3.957509548507934*^9},
+ CellLabel->
+  "Out[184]=",ExpressionUUID->"0ac80974-7f24-4223-94d0-64894d6cb6e2"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
 }, Open  ]]
 },
-WindowSize->{945, 885},
-WindowMargins->{{34, Automatic}, {0, Automatic}},
+WindowSize->{833, 885},
+WindowMargins->{{56, Automatic}, {-5, Automatic}},
 FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (December 26, 2024)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"c6b8b0c1-3c29-4a73-a612-339ede323924"
@@ -1014,64 +1980,55 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[576, 22, 515, 8, 70, "Title",ExpressionUUID->"96ad1f53-48e3-402f-92df-ed3a6136d606"],
 Cell[CellGroupData[{
-Cell[1116, 34, 156, 3, 66, "Section",ExpressionUUID->"9988c9db-ccbb-47cc-90f8-6c9ef07b4432"],
-Cell[1275, 39, 557, 11, 121, "Text",ExpressionUUID->"e3d79c93-71ce-4a7e-9248-2392c3b8c876"],
-Cell[1835, 52, 1862, 42, 121, "Text",ExpressionUUID->"eaeb96f7-cd93-4c3d-8a28-33d93c41c2c9"]
-}, Open  ]],
+Cell[1116, 34, 511, 10, 103, "Section",ExpressionUUID->"8001542e-7a27-49ee-b44a-936a8e4cf1bd"],
+Cell[1630, 46, 1723, 44, 143, "Text",ExpressionUUID->"ee7f81f7-2795-4f8a-847f-c757aa2a9610"],
 Cell[CellGroupData[{
-Cell[3734, 99, 187, 3, 66, "Section",ExpressionUUID->"60c649e3-6b03-479e-9008-f92108a03109"],
-Cell[3924, 104, 161, 3, 33, "Text",ExpressionUUID->"3a15f37e-87ba-411d-8515-b32986970810"]
-}, Open  ]],
+Cell[3378, 94, 512, 8, 53, "Subsection",ExpressionUUID->"802055fe-749f-46cc-b0e6-49726cec9b71"],
 Cell[CellGroupData[{
-Cell[4122, 112, 401, 6, 66, "Section",ExpressionUUID->"700bf346-35ef-426b-9880-a852184c131a"],
-Cell[4526, 120, 532, 14, 55, "Text",ExpressionUUID->"f1ca8371-93e6-4f8c-85ea-90772b6fa77d"],
+Cell[3915, 106, 171, 3, 43, "Subsubsection",ExpressionUUID->"6d0579ae-ae42-4af5-970f-ea718e8f157d"],
+Cell[4089, 111, 269, 6, 55, "Text",ExpressionUUID->"a76f92d7-df17-44fa-9635-4a9652d70ad3"],
+Cell[4361, 119, 26117, 642, 1500, "Input",ExpressionUUID->"95706b75-bf7c-40e1-8dc2-3c6163e87d3d"]
+}, Closed]],
 Cell[CellGroupData[{
-Cell[5083, 138, 2306, 63, 119, "Input",ExpressionUUID->"f84077b3-4faa-44f2-8cc6-04c1cd166f3d"],
-Cell[7392, 203, 2520, 48, 552, "Output",ExpressionUUID->"2740476d-2373-42d8-b697-64f3c1bb1d60"]
+Cell[30515, 766, 224, 4, 35, "Subsubsection",ExpressionUUID->"71cc6866-8fe0-486e-b211-6b183924b855"],
+Cell[30742, 772, 295, 7, 55, "Text",ExpressionUUID->"92d82d09-333b-4a36-ba81-ade23da11b1f"],
+Cell[31040, 781, 16857, 433, 1091, "Input",ExpressionUUID->"d96582a1-5647-4008-be0b-60fabbe9bf3c"]
 }, Closed]]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[9961, 257, 403, 6, 66, "Section",ExpressionUUID->"8001542e-7a27-49ee-b44a-936a8e4cf1bd"],
-Cell[10367, 265, 230, 4, 33, "Text",ExpressionUUID->"dc6baca2-db93-4fca-8407-0bf5a764642c"],
-Cell[CellGroupData[{
-Cell[10622, 273, 439, 7, 53, "Subsection",ExpressionUUID->"802055fe-749f-46cc-b0e6-49726cec9b71"],
-Cell[CellGroupData[{
-Cell[11086, 284, 171, 3, 43, "Subsubsection",ExpressionUUID->"6d0579ae-ae42-4af5-970f-ea718e8f157d"],
-Cell[11260, 289, 269, 6, 55, "Text",ExpressionUUID->"a76f92d7-df17-44fa-9635-4a9652d70ad3"],
-Cell[11532, 297, 8897, 199, 1193, "Input",ExpressionUUID->"95706b75-bf7c-40e1-8dc2-3c6163e87d3d"]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[20466, 501, 224, 4, 35, "Subsubsection",ExpressionUUID->"71cc6866-8fe0-486e-b211-6b183924b855"],
-Cell[20693, 507, 295, 7, 55, "Text",ExpressionUUID->"92d82d09-333b-4a36-ba81-ade23da11b1f"],
-Cell[20991, 516, 3917, 99, 437, "Input",ExpressionUUID->"d96582a1-5647-4008-be0b-60fabbe9bf3c"]
+Cell[47946, 1220, 386, 6, 37, "Subsection",ExpressionUUID->"38905920-e9b8-422e-94a7-ee83f6570a70"],
+Cell[CellGroupData[{
+Cell[48357, 1230, 1115, 32, 70, "Input",ExpressionUUID->"6e626638-43ae-489f-9f2f-e25429071795"],
+Cell[49475, 1264, 4037, 86, 430, "Output",ExpressionUUID->"4e10da94-e256-4c09-9687-782892ab58db"],
+Cell[53515, 1352, 3317, 64, 463, "Output",ExpressionUUID->"28482d30-2246-4a87-a44e-35abfd46b680"]
 }, Open  ]]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[24957, 621, 337, 5, 53, "Subsection",ExpressionUUID->"38905920-e9b8-422e-94a7-ee83f6570a70"],
-Cell[CellGroupData[{
-Cell[25319, 630, 1115, 32, 70, "Input",ExpressionUUID->"6e626638-43ae-489f-9f2f-e25429071795"],
-Cell[26437, 664, 3739, 78, 430, "Output",ExpressionUUID->"7aa72d59-4017-46fd-8d48-ca11e2c550b8"],
-Cell[30179, 744, 2884, 54, 463, "Output",ExpressionUUID->"775da230-6f0c-4258-956e-3d0a90cbe517"]
-}, Open  ]]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[33112, 804, 165, 3, 53, "Subsection",ExpressionUUID->"e5ba56b6-b95b-4a29-8d30-d8528be0340c"],
-Cell[CellGroupData[{
-Cell[33302, 811, 646, 19, 49, "Input",ExpressionUUID->"567e95ca-ddfa-461e-a231-07afc2858cf9"],
-Cell[33951, 832, 3601, 76, 449, "Output",ExpressionUUID->"8a1af8e0-a129-415e-9f1e-825dd6b98cf2"],
-Cell[37555, 910, 2746, 52, 464, "Output",ExpressionUUID->"ae482ef0-e4ae-4244-8873-10d0ed7eaca7"]
-}, Open  ]]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[40350, 968, 168, 3, 53, "Subsection",ExpressionUUID->"c13497fc-8c82-47be-8abd-bdcb4c4f8a29"],
-Cell[40521, 973, 71, 0, 33, "Text",ExpressionUUID->"a5eaa250-fcca-465f-8a67-e95b14f4939e"]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[40629, 978, 231, 4, 37, "Subsection",ExpressionUUID->"582247d2-6330-4323-9add-cef274729921"],
-Cell[40863, 984, 81, 0, 29, "Input",ExpressionUUID->"07b7d0cb-dc98-4664-8287-296297328946"]
+Cell[56881, 1422, 214, 4, 37, "Subsection",ExpressionUUID->"e5ba56b6-b95b-4a29-8d30-d8528be0340c"],
+Cell[CellGroupData[{
+Cell[57120, 1430, 646, 19, 49, "Input",ExpressionUUID->"567e95ca-ddfa-461e-a231-07afc2858cf9"],
+Cell[57769, 1451, 3850, 83, 430, "Output",ExpressionUUID->"c1e28dba-017d-4607-804a-20db27415b8c"],
+Cell[61622, 1536, 3129, 60, 452, "Output",ExpressionUUID->"cf1ea56c-9c2c-4cf1-a12a-8e52f88f1666"]
 }, Open  ]]
-}, Open  ]],
-Cell[40971, 988, 239, 5, 66, "Section",ExpressionUUID->"d25b5afc-ecb9-4da1-b92f-0e37bdbdca42"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[64800, 1602, 219, 4, 37, "Subsection",ExpressionUUID->"c13497fc-8c82-47be-8abd-bdcb4c4f8a29"],
+Cell[65022, 1608, 118, 3, 33, "Text",ExpressionUUID->"a5eaa250-fcca-465f-8a67-e95b14f4939e"],
+Cell[CellGroupData[{
+Cell[65165, 1615, 322, 5, 49, "Input",ExpressionUUID->"1b224b6c-d2e5-43a8-b664-07d205eb7985"],
+Cell[65490, 1622, 4154, 86, 430, "Output",ExpressionUUID->"d6e292f7-a8d5-4ea8-ab9d-64e9290715a9"],
+Cell[69647, 1710, 3442, 63, 463, "Output",ExpressionUUID->"fc99fea3-1396-492d-9c97-0641965f17fd"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[73138, 1779, 277, 4, 37, "Subsection",ExpressionUUID->"582247d2-6330-4323-9add-cef274729921"],
+Cell[CellGroupData[{
+Cell[73440, 1787, 336, 6, 49, "Input",ExpressionUUID->"07b7d0cb-dc98-4664-8287-296297328946"],
+Cell[73779, 1795, 4368, 91, 430, "Output",ExpressionUUID->"e13d8056-a5f3-4f63-9e69-90d7e048b838"],
+Cell[78150, 1888, 3659, 68, 463, "Output",ExpressionUUID->"0ac80974-7f24-4223-94d0-64894d6cb6e2"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
 }, Open  ]]
 }
 ]
