@@ -1,3 +1,3 @@
 # Numerical-integrator
 
-Lecture note of the symplectic integrator is [here](https://share.note.sx/spx6b9f8#2dfjTnlTBGY/VRLUTCLtjSAsgLM44fdpu6GALt6Z8L8)
+Lecture note of the symplectic integrator are available [here](https://share.note.sx/spx6b9f8#2dfjTnlTBGY/VRLUTCLtjSAsgLM44fdpu6GALt6Z8L8). The notes are formatted in Markdown, and may have formula issue due to a third party plug-in. Public Wolfram code (Mathematica) can be found here. [here](https://www.wolframcloud.com/obj/gracehhchuang/Published/symplectic_integrators_SHO.nb)
